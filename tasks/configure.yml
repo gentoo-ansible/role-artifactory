@@ -1,0 +1,25 @@
+---
+- name: create config directory
+  file: >
+    state=directory
+    path={{ artifactory_conf_dir }}
+    owner={{ artifactory_user }}
+    group={{ artifactory_group }}
+    mode=0755
+
+- name: configure database
+  template: >
+    src=storage.properties
+    dest={{ artifactory_conf_dir }}/storage.properties
+    owner=root group={{ artifactory_group }} mode=0640
+  notify: restart {{ artifactory_name }}
+
+- name: create symlinks
+  file: >
+    state=link
+    src={{ item.src }}
+    dest={{ item.dest }}
+    force=yes
+  with_items:
+    - { src: "{{ artifactory_conf_dir }}", dest: "{{ artifactory_home_dir }}/etc" }
+    - { src: "{{ artifactory_logs_dir }}", dest: "{{ artifactory_home_dir }}/logs" }

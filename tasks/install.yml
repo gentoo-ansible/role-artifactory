@@ -1,0 +1,23 @@
+---
+- name: create temp directory
+  action: mktemp_dir
+  register: _tmp
+
+- name: fetch package
+  get_url: >
+    url={{ artifactory_pkg_url }}
+    dest={{ _tmp.path }}/{{ artifactory_pkg_url | basename }}
+
+- name: unpack package to the temp directory
+  command: >
+    unzip -o -d {{ _tmp.path }} {{ _tmp.path }}/{{ artifactory_pkg_url | basename }}
+
+- name: copy WAR file to destination
+  shell: >
+    cp -R {{ _tmp.path }}/artifactory-*/webapps/artifactory.war {{ artifactory_home_dir }}/
+
+- name: delete the temp directory
+  file: >
+    path={{ _tmp.path }}
+    state=absent
+  tags: cleanup

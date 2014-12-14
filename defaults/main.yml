@@ -1,0 +1,56 @@
+---
+# Name of this Artifactory instance.
+artifactory_name: artifactory
+
+# Version to install.
+artifactory_version: 3.4.1
+
+# URL of the distribution package to download.
+artifactory_pkg_url: "http://dl.bintray.com/jfrog/artifactory/artifactory-{{ artifactory_version }}.zip"
+
+
+# User to run the Artifactory instance (will be created if not exist).
+artifactory_user: artifact
+
+# Group to run the Artifactory instance (will be created if not exist).
+artifactory_group: "{{ artifactory_user }}"
+
+# Port number to listen on for HTTP.
+artifactory_server_port: 8080
+
+# The relative URL root (i.e. context path).
+artifactory_context_root: ''
+
+
+# Path of the Artifactory home directory in which binary data and WAR file
+# should be stored.
+artifactory_home_dir: "/var/lib/{{ artifactory_name }}"
+
+# Path of the configuration directory.
+artifactory_conf_dir: "/etc/{{ artifactory_name }}"
+
+# Path of the logs directory.
+artifactory_logs_dir: "/var/log/{{ artifactory_name }}"
+
+
+#
+# Database
+#
+
+# Address of the PostgreSQL instance.
+artifactory_db_host: "{{ pg_host }}"
+
+# Port number of the PostgreSQL instance.
+artifactory_db_port: 5432
+
+# Name of the Artifactory database to store metadata.
+artifactory_db_name: "{{ artifactory_name }}"
+
+# Name of the database user to use.
+artifactory_db_user: "{{ artifactory_name }}"
+
+# Password of the database user.
+artifactory_db_pass: "{{ artifactory_db_user }}"
+
+# Should not be changed.
+artifactory_db_delegate_to: "{{ artifactory_db_host | replace('localhost', inventory_hostname) | replace('127.0.0.1', inventory_hostname) }}"

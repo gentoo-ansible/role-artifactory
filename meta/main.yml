@@ -1,0 +1,19 @@
+---
+dependencies:
+  - role: jetty-runner
+    name: "{{ artifactory_name }}"
+    deploy_dir: "{{ artifactory_home_dir }}"
+    logs_dir: "{{ artifactory_logs_dir }}"
+    user: "{{ artifactory_user }}"
+    group: "{{ artifactory_group }}"
+    context_root: "{{ artifactory_context_root }}"
+    server_port: "{{ artifactory_server_port }}"
+    server_extra_jars: [ 'jdbc-postgresql' ]
+    env_properties:
+      artifactory.home: "{{ artifactory_home_dir }}"
+    java_heap_size: 512
+    java_perm_size: 128
+    java_opts:
+      - '-XX:+UseG1GC'
+      - '-XX:MaxGCPauseMillis=80'
+      - '-Xss256k'

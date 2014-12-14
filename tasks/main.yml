@@ -1,0 +1,24 @@
+---
+- name: install PostgreSQL JDBC driver
+  portage: package=dev-java/jdbc-postgresql
+  tags: packages
+
+- name: check if already installed
+  command: "test -e {{ artifactory_home_dir }}/artifactory.war"
+  register: _check_result
+  failed_when: false
+  changed_when: false
+
+- include: install.yml tags=install
+  when: _check_result.rc != 0
+
+- include: configure.yml tags=config
+
+- include: database.yml tags=database
+
+- name: enable and start artifactory
+  service: >
+    name={{ artifactory_name }}
+    enabled=true
+    state=started
+  tags: services
