@@ -11,6 +11,8 @@ dependencies:
     server_extra_jars: [ 'jdbc-postgresql' ]
     env_properties:
       artifactory.home: "{{ artifactory_home_dir }}"
+    rc_depend:
+      use: postgresql
     java_heap_size: 512
     java_perm_size: 128
     java_opts:
